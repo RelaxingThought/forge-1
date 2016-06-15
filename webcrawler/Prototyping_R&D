@@ -1,1 +1,38 @@
+# Super simple scraping- pure string edition
+# This thing grabs simple strings from webpages, no more no less.
 
+# Importing the necessary tools for the job
+# HTML parser clears unnecessary HTML code for easier processing
+# URLLib is necessary for opening web pages when running
+import HTMLParser
+import urllib
+
+# Global List to hold all captured information
+urlText = []
+
+# parseText Class performing the HTML parsing, capture line if not blank
+class parseText(HTMLParser.HTMLParser):
+    
+    # This can be redefined to capture more specific data
+	def handle_data(self, data):
+		if data != '\n' :
+			urlText.append(data)
+
+# Calling the parseText class
+webParser = parseText()
+
+# Target URL
+givenURL = "http://www.journalgazette.net/"
+
+# Opening the webpage for reading
+URLHandler = urllib.urlopen(givenURL)
+# Capturing raw HTML data without parsing. Might eventually be helpful, who knows.
+html_raw = URLHandler.read()
+
+# Feeding the parser the webpage's data, then closing the connection
+webParser.feed(urllib.urlopen(givenURL).read())
+webParser.close()
+
+# Printing out the results. Good for debugging.
+for item in urlText:
+	print item
